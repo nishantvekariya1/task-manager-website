@@ -93,3 +93,30 @@ export const logoutUser = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+export const getTeamList = async (req, res) => {
+  try {
+    const users = await User.find().select("name title role email isActive");
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+export const getNotificationsList = async (req, res) => {
+  try {
+    const { userId } = req.user;
+
+    const notice = await Notice.find({
+      team: userId,
+      isRead: { $nin: [userId] },
+    }).populate("task", "title");
+
+    res.status(201).json(notice);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
