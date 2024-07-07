@@ -210,3 +210,44 @@ export const changeUserPassword = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+export const activateUserProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (user) {
+      user.isActive = req.body.isActive;
+
+      await user.save();
+
+      res.status(201).json({
+        status: true,
+        message: `User account has been ${
+          user?.isActive ? "activated" : "disabled"
+        }`,
+      });
+    } else {
+      res.status(404).json({ status: false, message: "User not Found" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+export const deleteUserProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await User.findByIdAndDelete(id);
+
+    res
+      .status(200)
+      .json({ status: true, message: "User Deleted Successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
