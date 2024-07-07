@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
 import UserInfo from "./UserInfo";
 import TaskDialog from "./task/TaskDialog";
-// import AddSubTask from "./task/AddTask";
+import AddSubTask from "./task/AddSubTask";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -39,7 +39,7 @@ const TaskCard = ({ task }) => {
             <span className="uppercase">{task?.priority} Priority</span>
           </div>
 
-          {/* {user?.isAdmin && <TaskDialog task={task} />} */}
+          {user?.isAdmin && <TaskDialog task={task} />}
         </div>
 
         <>
@@ -122,7 +122,7 @@ const TaskCard = ({ task }) => {
         </div>
       </div>
 
-      {/* <AddSubTask open={open} setOpen={setOpen} id={task._id} /> */}
+      <AddSubTask open={open} setOpen={setOpen} id={task._id} />
     </>
   );
 };

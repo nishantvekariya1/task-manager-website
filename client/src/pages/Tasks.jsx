@@ -8,7 +8,7 @@ import BoardView from "../components/BoardView";
 import Button from "../components/Button";
 import Loading from "../components/Loader";
 import Tabs from "../components/Tabs";
-// import AddTask from "../components/task/AddTask";
+import AddTask from "../components/task/AddTask";
 import Table from "../components/task/Table";
 import TaskTitle from "../components/TaskTitle";
 import Title from "../components/Title";
@@ -73,7 +73,7 @@ const Tasks = () => {
         )}
       </Tabs>
 
-      {/* <AddTask open={open} setOpen={setOpen} /> */}
+      <AddTask open={open} setOpen={setOpen} />
     </div>
   );
 };

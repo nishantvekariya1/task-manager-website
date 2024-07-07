@@ -11,8 +11,7 @@ import {
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../../utils";
 import Button from "../Button";
 import UserInfo from "../UserInfo";
-
-// import ConfirmatioDialog from "../Dialogs";
+import ConfirmatioDialog from "../Dialogs";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -138,11 +137,11 @@ const Table = ({ tasks }) => {
       </div>
 
       {/* TODO */}
-      {/* <ConfirmatioDialog
+      <ConfirmatioDialog
         open={openDialog}
         setOpen={setOpenDialog}
         onClick={deleteHandler}
-      /> */}
+      />
     </>
   );
 };
