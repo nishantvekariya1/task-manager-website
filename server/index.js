@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import { dbConnection } from "./utils/index.js";
-import { errorHandler, routeNotFound } from "./middleware/errorMidlewaves.js";
+import { errorHandler, routeNotFound } from "./middlewares/errorMidlewaves.js";
+import routes from "./routes/index.js";
 
 dotenv.config();
 
@@ -30,7 +31,7 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-// app.use("/api", routes);
+app.use("/api", routes);
 
 app.use(routeNotFound);
 
