@@ -39,7 +39,7 @@ const TaskCard = ({ task }) => {
             <span className="uppercase">{task?.priority} Priority</span>
           </div>
 
-          {user?.isAdmin && <TaskDialog task={task} />}
+          {user?.data?.isAdmin && <TaskDialog task={task} />}
         </div>
 
         <>
