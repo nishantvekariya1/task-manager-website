@@ -12,6 +12,9 @@ const protectRoute = async (req, res, next) => {
         "isAdmin email"
       );
 
+      console.log("Decode Token ::: ", decodedToken.userId);
+      console.log("Resp ::: ", resp);
+
       req.user = {
         email: resp.email,
         isAdmin: resp.isAdmin,
