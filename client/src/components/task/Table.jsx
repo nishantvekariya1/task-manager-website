@@ -12,6 +12,8 @@ import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../../utils";
 import Button from "../Button";
 import UserInfo from "../UserInfo";
 import ConfirmatioDialog from "../Dialogs";
+import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import AddTask from "./AddTask";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -22,13 +24,36 @@ const ICONS = {
 const Table = ({ tasks }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const [trashTask] = useTrashTaskMutation();
+
+  const editTaskHandler = async (el) => {
+    setSelected(el);
+    setOpenEdit(true);
+  };
 
   const deleteClicks = (id) => {
     setSelected(id);
     setOpenDialog(true);
   };
 
-  const deleteHandler = () => {};
+  const deleteHandler = async () => {
+    try {
+      const res = await trashTask({
+        id: selected,
+        isTrashed: "trash",
+      }).unwrap();
+      console.log(res?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.log(error?.data?.message || error?.error);
+    }
+  };
 
   const TableHeader = () => (
     <thead className="w-full border-b border-gray-300">
@@ -110,6 +135,7 @@ const Table = ({ tasks }) => {
           className="text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base"
           label="Edit"
           type="button"
+          onClick={() => editTaskHandler(task)}
         />
 
         <Button
@@ -141,6 +167,13 @@ const Table = ({ tasks }) => {
         open={openDialog}
         setOpen={setOpenDialog}
         onClick={deleteHandler}
+      />
+
+      <AddTask
+        open={openEdit}
+        setOpen={setOpenEdit}
+        task={selected}
+        key={new Date().getTime()}
       />
     </>
   );

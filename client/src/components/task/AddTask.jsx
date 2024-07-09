@@ -7,32 +7,122 @@ import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 import SelectList from "../SelectList";
 import UserList from "./UserList";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../utils/firebase";
+import {
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+} from "../../redux/slices/api/taskApiSlice";
+import { dateFormatter } from "../../utils";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const uploadedFileURLs = [];
 
-const AddTask = ({ open, setOpen }) => {
-  const task = "";
+const AddTask = ({ open, setOpen, task }) => {
+  const defaultValues = {
+    title: task?.title || "",
+    data: dateFormatter(task?.date || new Date()),
+    team: [],
+    stage: "",
+    priority: "",
+    assets: [],
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues });
+
   const [team, setTeam] = useState(task?.team || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
+
   const [priority, setPriority] = useState(
     task?.priority?.toUpperCase() || PRIORIRY[2]
   );
+
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const submitHandler = () => {};
+  const [createTask, { isLoading }] = useCreateTaskMutation();
+  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
+  const URLS = task?.assets ? [...task.assets] : [];
+
+  const submitHandler = async (data) => {
+    for (const file of assets) {
+      setUploading(true);
+      try {
+        await uploadFile(file);
+      } catch (error) {
+        console.log("Error Uploading File : ", error.message);
+        return;
+      } finally {
+        setUploading(false);
+      }
+    }
+
+    try {
+      const newData = {
+        ...data,
+        assets: [...URLS, ...uploadedFileURLs],
+        team,
+        stage,
+        priority,
+      };
+
+      const res = task?._id
+        ? await updateTask({ ...newData, _id: task._id }).unwrap()
+        : await createTask(newData).unwrap();
+
+      console.log(res.message);
+      setTimeout(() => {
+        setOpen(false);
+      }, 1500);
+    } catch (error) {
+      console.log(error?.data?.message || error.error);
+    }
+  };
 
   const handleSelect = (e) => {
     setAssets(e.target.files);
+  };
+
+  const uploadFile = async (file) => {
+    const storage = getStorage(app);
+
+    const name = new Date().getTime() + file.name;
+    const storageRef = ref(storage, name);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          console.log("Uploading...");
+        },
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              uploadedFileURLs.push(downloadURL);
+              resolve();
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        }
+      );
+    });
   };
 
   return (

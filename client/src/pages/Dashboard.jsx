@@ -10,12 +10,11 @@ import {
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
-import { summary } from "../assets/data";
 import { Chart } from "../components/Chart";
-import UserInfo from "../components/UserInfo";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
-import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 import Loading from "../components/Loader";
+import UserInfo from "../components/UserInfo";
+import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
+import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {
