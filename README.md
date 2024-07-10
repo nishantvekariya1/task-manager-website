@@ -63,12 +63,12 @@ Tasktracker is a task management website built using the MERN stack (MongoDB, Ex
     # In the server directory
     cd server
     npm install
-    npm install -D tailwindcss
-    npx tailwindcss init
 
     # In the client directory
     cd client
     npm install
+    npm install -D tailwindcss
+    npx tailwindcss init
     ```
 
 3. Create a `.env` file in the root directory and add the following environment variables:
