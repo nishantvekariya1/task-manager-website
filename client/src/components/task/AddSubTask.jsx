@@ -4,6 +4,7 @@ import Button from "../Button";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 import { useCreateSubTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import { toast } from "sonner";
 
 const AddSubTask = ({ open, setOpen, id }) => {
   const {
@@ -17,12 +18,12 @@ const AddSubTask = ({ open, setOpen, id }) => {
   const handleOnSubmit = async (data) => {
     try {
       const res = await addSbTask({ data, id }).unwrap();
-      console.log(res.message);
+      toast.success(res.message);
       setTimeout(() => {
         setOpen(false);
       }, 500);
     } catch (err) {
-      console.log(err?.data?.message || err.error);
+      toast.error(err?.data?.message || err.error);
     }
   };
 

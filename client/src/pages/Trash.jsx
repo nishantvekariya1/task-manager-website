@@ -16,6 +16,7 @@ import {
 } from "../redux/slices/api/taskApiSlice";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";
 import Loading from "../components/Loader";
+import { toast } from "sonner";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -71,14 +72,14 @@ const Trash = () => {
           break;
       }
 
-      console.log(result?.message);
+      toast.success(result?.message);
 
       setTimeout(() => {
         setOpenDialog(false);
         refetch();
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 

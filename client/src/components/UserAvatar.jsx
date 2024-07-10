@@ -9,6 +9,7 @@ import { useLogoutMutation } from "../redux/slices/api/authApiSlice";
 import { logout } from "../redux/slices/authSlice";
 import AddUser from "./AddUser";
 import ChangePassWord from "./ChangePassWord";
+import { toast } from "sonner";
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ const UserAvatar = () => {
       dispatch(logout());
       navigate("/log-in");
     } catch (error) {
-      console.log("Something Went Wrong");
+      toast.error("Something Went Wrong");
     }
   };
 

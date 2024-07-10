@@ -6,6 +6,7 @@ import Loading from "./Loader";
 import ModalWrapper from "./ModalWrapper";
 import Textbox from "./Textbox";
 import { useChangePasswordMutation } from "../redux/slices/api/userApiSlice";
+import { toast } from "sonner";
 
 const ChangePassWord = ({ open, setOpen }) => {
   const {
@@ -18,18 +19,18 @@ const ChangePassWord = ({ open, setOpen }) => {
 
   const handleOnSubmit = async (data) => {
     if (data.password !== data.cpass) {
-      console.log("Password doesn't match");
+      toast.error("Password doesn't match");
       return;
     }
     try {
       const res = await changeUserPassword(data).unwrap();
-      console.log("Password has been Changed");
+      toast.success("Password has been Changed");
 
       setTimeout(() => {
         setOpen(false);
       }, 1500);
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 

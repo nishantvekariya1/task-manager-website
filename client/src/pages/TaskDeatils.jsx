@@ -14,15 +14,14 @@ import {
 import { RxActivityLog } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { tasks } from "../assets/data";
-import Tabs from "../components/Tabs";
-import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
-import Loading from "../components/Loader";
 import Button from "../components/Button";
+import Loading from "../components/Loader";
+import Tabs from "../components/Tabs";
 import {
   useGetSingleTaskQuery,
   usePostTaskActivityMutation,
 } from "../redux/slices/api/taskApiSlice";
+import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 
 const assets = [
   "https://images.pexels.com/photos/2418664/pexels-photo-2418664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -261,10 +260,10 @@ const Activities = ({ activity, id, refetch }) => {
         id,
       }).unwrap();
       setText("");
-      console.log(result?.message);
+      toast.success(result?.message);
       refetch();
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 

@@ -14,6 +14,7 @@ import UserInfo from "../UserInfo";
 import ConfirmatioDialog from "../Dialogs";
 import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import AddTask from "./AddTask";
+import { toast } from "sonner";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -44,14 +45,14 @@ const Table = ({ tasks }) => {
         id: selected,
         isTrashed: "trash",
       }).unwrap();
-      console.log(res?.message);
+      toast.success(res?.message);
 
       setTimeout(() => {
         setOpenDialog(false);
         window.location.reload();
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 

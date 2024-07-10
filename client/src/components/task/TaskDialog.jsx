@@ -13,6 +13,7 @@ import {
   useDuplicateTaskMutation,
   useTrashTaskMutation,
 } from "../../redux/slices/api/taskApiSlice";
+import { toast } from "sonner";
 
 const TaskDialog = ({ task }) => {
   const [open, setOpen] = useState(false);
@@ -27,14 +28,14 @@ const TaskDialog = ({ task }) => {
     try {
       const res = await duplicateTask(task._id).unwrap();
 
-      console.log(res?.message);
+      toast.success(res?.message);
 
       setTimeout(() => {
         setOpenDialog(false);
         window.location.reload();
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 
@@ -48,14 +49,14 @@ const TaskDialog = ({ task }) => {
         id: task._id,
         isTrashed: "trash",
       }).unwrap();
-      console.log(res?.message);
+      toast.success(res?.message);
 
       setTimeout(() => {
         setOpenDialog(false);
         window.location.reload();
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error?.error);
+      toast.error(error?.data?.message || error?.error);
     }
   };
 

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
-import { summary } from "../assets/data";
 import { getInitials } from "../utils";
+import { toast } from "sonner";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import AddUser from "../components/AddUser";
@@ -30,13 +30,13 @@ const Users = () => {
         id: selected?._id,
       });
       refetch();
-      console.log("Deleted Successfully");
+      toast.success("Deleted Successfully");
       setSelected(null);
       setTimeout(() => {
         setOpenAction(false);
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error.error);
+      toast.error(error?.data?.message || error.error);
     }
   };
 
@@ -44,13 +44,13 @@ const Users = () => {
     try {
       const result = await deleteUser(selected);
       refetch();
-      console.log(result?.data?.message);
+      toast.success(result?.data?.message);
       setSelected(null);
       setTimeout(() => {
         setOpenDialog(false);
       }, 500);
     } catch (error) {
-      console.log(error?.data?.message || error.error);
+      toast.error(error?.data?.message || error.error);
     }
   };
 
