@@ -157,6 +157,9 @@ const Dashboard = () => {
   }
   const totals = data?.tasks;
 
+  console.log("Toals : ", totals);
+  console.log("data : ", data);
+
   const stats = [
     {
       _id: "1",
